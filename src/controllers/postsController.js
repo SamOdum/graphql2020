@@ -1,22 +1,22 @@
 const postsRepository = require('../repository/postsRepository');
 // get all the posts
-function getAll() {
-  return postsRepository.getAll();
+function getAll(req, res) {
+  return postsRepository.getAll(req, res);
 }
 
 // save a new post
-function save(newPost) {
-  return postsRepository.save(newPost);
+function save(req, res) {
+  return postsRepository.save(req, res);
 }
 
 // get post by id
-function getById(postId) {
-  return postsRepository.getById(parseInt(postId, 10));
+function getById(req, res) {
+  return postsRepository.getById(req, res);
 }
 
 // delete post by id
-function deleteById(postId) {
-  return postsRepository.deleteById(parseInt(postId, 10));
+function deleteById(req, res) {
+  return postsRepository.deleteById(req, res);
 }
 
 module.exports = {

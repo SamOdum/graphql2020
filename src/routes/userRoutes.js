@@ -14,6 +14,6 @@ router.get('/:id', (req, res) => usersController.getById(req, res));
 router.post('/', (req, res) => usersController.save(req, res));
 
 /* DELETE /Users/:id - delete an existing User with id */
-router.delete('/:id', (req, res) => (usersController.deleteById(req, res)));
+router.delete('/:id', (req, res) => usersController.deleteById(req, res));
 
 module.exports = router;
