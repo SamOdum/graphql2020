@@ -56,13 +56,19 @@ async function save(req, res) {
   }
 }
 
-// get post by id
-function getById(postId) {
-  const post = postsData.filter((item) => item.id === postId);
-  if (post.length === 0) {
-    throw new Error(`Post id: ${postId} not found`);
+/* get Post by id */
+async function getById(req, res) {
+  const { id } = req.params;
+  try {
+    const { rows } = await db.query(queries.getAllPosts);
+    const foundPost = await rows.filter((post) => post.post_id === id);
+    if (foundPost[0].length === 0) {
+      throw new Error(`Post with id: ${id} not found`);
+    }
+    return res.status(200).json({ status: 'success', message: `Found post with title ${foundPost[0].title}`, payload: { title: foundPost[0].title, body: foundPost[0].body } });
+  } catch (error) {
+    return res.status(400).send({ status: 'error', message: error });
   }
-  return post[0];
 }
 
 // delete post by id
