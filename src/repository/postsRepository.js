@@ -71,14 +71,20 @@ async function getById(req, res) {
   }
 }
 
-// delete post by id
-function deleteById(postId) {
-  const postIndex = postsData.findIndex((item) => item.id === postId);
-  if (postIndex === -1) {
-    throw new Error(`Post id: ${postId} not found`);
+/* delete user by id */
+async function deleteById(req, res) {
+  const { id } = req.params;
+  try {
+    const { rows } = await db.query(queries.getAllUsers);
+    const postIndex = await rows.findIndex((post) => post.post_id === id);
+    if (postIndex === -1) {
+      throw new Error('The user you seek does not exist');
+    }
+    rows.splice(postIndex, postIndex + 1);
+    return res.status(200).json({ status: 'success', message: `Post with ${id} successfully deleted` });
+  } catch (error) {
+    return res.status(400).send({ status: 'error', message: error });
   }
-  postsData.splice(postIndex, postIndex + 1);
-  return { id: postId };
 }
 
 module.exports = {
