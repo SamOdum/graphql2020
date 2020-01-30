@@ -4,6 +4,7 @@ const db = require('../utils/dbConfig');
 const queries = {
   getAllUsers: 'SELECT * FROM users',
   postUser: 'INSERT INTO users(first_name, last_name, email, phone, city, country ) VALUES ($1, $2, $3, $4, $5, $6) returning *',
+  getUserPosts: 'SELECT post_id FROM posts WHERE user_id=$1',
   getOneUser: 'SELECT * FROM users WHERE user_id = $1',
 };
 
@@ -57,7 +58,9 @@ async function getById(req, res) {
     if (foundUser[0].length === 0) {
       throw new Error(`User with id: ${id} not found`);
     }
-    return res.status(200).json({ status: 'success', message: `${foundUser[0].first_name} ${foundUser[0].last_name} is the user with Id ${id}`, payload: foundUser });
+    const response = await db.query(queries.getUserPosts, [id]);
+    const userPosts = response.rows;
+    return res.status(200).json({ status: 'success', message: `Successfully found user with Id ${id}`, payload: { ...foundUser, posts: userPosts } });
   } catch (error) {
     return res.status(400).send({ status: 'error', message: error });
   }

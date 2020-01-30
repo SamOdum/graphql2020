@@ -2,7 +2,7 @@ const db = require('../utils/dbConfig');
 
 /* Initialize db queries object */
 const queries = {
-  getAllPosts: 'SELECT * FROM posts',
+  getAllPosts: 'SELECT post_id, user_id, created_on, title, body FROM posts',
   postOne: 'INSERT INTO posts(user_id, title, body, tags ) VALUES ($1, $2, $3, $4) returning *',
   getOnePost: 'SELECT * FROM posts WHERE user_id = $1',
 };
