@@ -1,13 +1,5 @@
 const db = require('../utils/dbConfig');
 
-const postsData = [{
-  id: 1,
-  createdOn: '2020-01-05',
-  tags: ['tech', 'coding', 'beginner', 'graphql,'],
-  title: 'The first post in a long line of posts',
-  body: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda aspernatur porro error? Reiciendis autem possimus, quidem officiis nisi cumque libero voluptas? Iure ducimus id impedit deserunt sunt recusandae officiis magnam?Nemo neque corrupti itaque excepturi soluta illo ad laudantium, esse magni voluptas blanditiis ea nihil expedita eligendi eveniet atque veniam nam harum maxime accusantium temporibus fugiat quaerat. Et, eos adipisci.',
-}];
-
 /* Initialize db queries object */
 const queries = {
   getAllPosts: 'SELECT * FROM posts',
