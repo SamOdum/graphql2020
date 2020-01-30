@@ -1,8 +1,8 @@
 const express = require('express');
 
 // Route controllers
-const usersController = require('./controllers/usersController');
-const postsController = require('./controllers/postsController');
+const userRoutes = require('./routes/userRoutes');
+const postRoutes = require('./routes/postRoutes');
 
 // Initialize express
 const app = express();
@@ -15,7 +15,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Routes
-app.use('/users', usersController) 
-app.use('/posts', postsController) 
+app.use('/users', userRoutes);
+app.use('/posts', postRoutes);
 
-app.listen(port, ()=>console.log(`Server successfully started on port ${port}`));
+// eslint-disable-next-line no-console
+app.listen(port, () => console.log(`Server successfully started on port ${port}`));

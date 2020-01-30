@@ -1,26 +1,27 @@
-const express = require('express');
-const postsService = require('../service/postsService');
+const postsRepository = require('../repository/postsRepository');
+// get all the posts
+function getAll() {
+  return postsRepository.getAll();
+}
 
-const router = express.Router();
-/* GET /posts - get list of all posts. */
-router.get('/', (req, res) => res.json(postsService.getAll()));
+// save a new post
+function save(newPost) {
+  return postsRepository.save(newPost);
+}
 
-/* GET /posts/:id - get post by postId */
-router.get('/:id', (req, res) => {
-  const postId = req.params.id;
-  return res.json(postsService.getById(postId));
-});
+// get post by id
+function getById(postId) {
+  return postsRepository.getById(parseInt(postId, 10));
+}
 
-/* POST /posts - create a new post and add in db */
-router.post('/', (req, res) => {
-  const newPost = req.body;
-  return res.json(postsService.save(newPost));
-});
+// delete post by id
+function deleteById(postId) {
+  return postsRepository.deleteById(parseInt(postId, 10));
+}
 
-/* DELETE /posts/:id - delete an existing post with id */
-router.delete('/:id', (req, res) => {
-  const postId = req.params.id;
-  return res.json(postsService.deleteById(postId)); // todo convert to do
-});
-
-module.exports = router;
+module.exports = {
+  getAll,
+  getById,
+  save,
+  deleteById,
+};

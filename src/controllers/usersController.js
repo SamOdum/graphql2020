@@ -1,28 +1,28 @@
-const { Router } = require('express');
-const usersService = require('../service/usersService');
+const usersRepository = require('../repository/userRepository');
 
-// Initialize express router
-const router = Router();
+// get all the users
+function getAll(req, res) {
+  return usersRepository.getAll(req, res);
+}
 
-/* GET /Users - get list of all Users. */
-router.get('/', (req, res) => res.json(usersService.getAll()));
+// save a new user
+function save(newUser) {
+  return usersRepository.save(newUser);
+}
 
-/* GET /Users/:id - get User by UserId */
-router.get('/:id', (req, res) => {
-  const userId = req.params.id;
-  return res.json(usersService.getById(userId));
-});
+// get user by id
+function getById(userId) {
+  return usersRepository.getById(parseInt(userId, 10));
+}
 
-/* POST /Users - create a new User and add in db */
-router.post('/', (req, res) => {
-  const newUser = req.body;
-  return res.json(usersService.save(newUser)); 
-});
+// delete user by id
+function deleteById(userId) {
+  return usersRepository.deleteById(parseInt(userId, 10));
+}
 
-/* DELETE /Users/:id - delete an existing User with id */
-router.delete('/:id', (req, res) => {
-  const userId = req.params.id;
-  return res.json(usersService.deleteById(userId)); // todo convert to do
-}); 
-
-module.exports = router;
+module.exports = {
+  getAll,
+  getById,
+  save,
+  deleteById,
+};
