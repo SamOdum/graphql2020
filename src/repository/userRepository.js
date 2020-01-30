@@ -1,21 +1,13 @@
 const db = require('../utils/dbConfig');
 
-const usersData = [{
-  id: 1,
-  firstName: 'Sam',
-  lastName: 'Odum',
-  city: 'Calabar',
-  country: 'Nigeria',
-  dateJoined: '2020-01-12',
-  interest: 'tech',
-}];
-
-// Initialize db queries object
+/* Initialize db queries object */
 const queries = {
   getAllUsers: 'SELECT * FROM users',
   postUser: 'INSERT INTO users(first_name, last_name, email, phone, city, country ) VALUES ($1, $2, $3, $4, $5, $6) returning *',
   getOneUser: 'SELECT * FROM users WHERE user_id = $1',
 };
+
+/* Validation function */
 function validateUser(user) {
   if (!(user.firstName || user.lastName)) {
     throw new Error("User's full name is required");
@@ -56,7 +48,7 @@ async function save(req, res) {
   }
 }
 
-// get user by id
+/* get user by id */
 async function getById(req, res) {
   const { id } = req.params;
   try {
@@ -71,14 +63,20 @@ async function getById(req, res) {
   }
 }
 
-// delete user by id
-function deleteById(userId) {
-  const userIndex = usersData.findIndex((item) => item.id === userId);
-  if (userIndex === -1) {
-    throw new Error(`User with id: ${userId} not found`);
+/* delete user by id */
+async function deleteById(req, res) {
+  const { id } = req.params;
+  try {
+    const { rows } = await db.query(queries.getAllUsers);
+    const userIndex = await rows.findIndex((user) => user.user_id === id);
+    if (userIndex === -1) {
+      throw new Error('The user you seek does not exist');
+    }
+    rows.splice(userIndex, userIndex + 1);
+    return res.status(200).json({ status: 'success', message: `User with ${id} successfully deleted` });
+  } catch (error) {
+    return res.status(400).send({ status: 'error', message: error });
   }
-  usersData.splice(userIndex, userIndex + 1);
-  return { id: userId };
 }
 
 module.exports = {

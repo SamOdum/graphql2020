@@ -16,8 +16,8 @@ function getById(req, res) {
 }
 
 // delete user by id
-function deleteById(userId) {
-  return usersRepository.deleteById(parseInt(userId, 10));
+function deleteById(req, res) {
+  return usersRepository.deleteById(req, res);
 }
 
 module.exports = {
