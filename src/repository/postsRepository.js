@@ -11,7 +11,7 @@ const postsData = [{
 /* Initialize db queries object */
 const queries = {
   getAllPosts: 'SELECT * FROM posts',
-  postOne: 'INSERT INTO users(user_id, tags, title, body ) VALUES ($1, $2, $3, $4) returning *',
+  postOne: 'INSERT INTO posts(user_id, title, body, tags ) VALUES ($1, $2, $3, $4) returning *',
   getOnePost: 'SELECT * FROM posts WHERE user_id = $1',
 };
 
@@ -32,19 +32,28 @@ async function getAll(req, res) {
     }
     return res.status(200).json({ rows });
   } catch (error) {
-    return res.status(400).send({ status: 'error', message: error });
+    return res.status(500).send({ status: 'error', message: error });
   }
 }
 
-// save a new post
-function save(post) {
-  validatePost(post);
-  const newPost = post;
-  const lastPost = postsData[postsData.length - 1] || { id: 0 };
-  const lastPostId = lastPost.id;
-  newPost.id = lastPostId + 1;
-  postsData.push(post);
-  return post;
+/* save a new post */
+async function save(req, res) {
+  const validEntry = validatePost(req.body);
+  const {
+    userId, title, body, tags,
+  } = req.body;
+  try {
+    const values = [userId, title, body, tags];
+    if (validEntry) {
+      const { rows } = await db.query(queries.postOne, values);
+      return res.status(201).json({
+        status: 'success', message: `Post about ${rows[0].title} successfully created`,
+      });
+    }
+    return res.status(400).send({ status: 'error', message: 'Something went wrong' });
+  } catch (error) {
+    return res.status(500).send({ status: 'error', message: error });
+  }
 }
 
 // get post by id
