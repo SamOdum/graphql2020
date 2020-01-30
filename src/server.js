@@ -11,8 +11,8 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 // Utility middlewares
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json({ extended: false }));
+// app.use(express.urlencoded());
 
 // Routes
 app.use('/users', userRoutes);

@@ -8,16 +8,10 @@ const router = Router();
 router.get('/', (req, res) => usersController.getAll(req, res));
 
 /* GET /Users/:id - get User by UserId */
-router.get('/:id', (req, res) => {
-  const userId = req.params.id;
-  return res.json(usersController.getById(userId));
-});
+router.get('/:id', (req, res) => usersController.getById(req, res));
 
 /* POST /Users - create a new User and add in db */
-router.post('/', (req, res) => {
-  const newUser = req.body;
-  return res.json(usersController.save(newUser));
-});
+router.post('/', (req, res) => usersController.save(req, res));
 
 /* DELETE /Users/:id - delete an existing User with id */
 router.delete('/:id', (req, res) => {

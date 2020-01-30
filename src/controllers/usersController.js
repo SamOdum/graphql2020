@@ -6,13 +6,13 @@ function getAll(req, res) {
 }
 
 // save a new user
-function save(newUser) {
-  return usersRepository.save(newUser);
+function save(req, res) {
+  return usersRepository.save(req, res);
 }
 
 // get user by id
-function getById(userId) {
-  return usersRepository.getById(parseInt(userId, 10));
+function getById(req, res) {
+  return usersRepository.getById(req, res);
 }
 
 // delete user by id
